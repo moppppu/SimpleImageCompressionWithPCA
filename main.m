@@ -5,7 +5,7 @@ clc;
 % Read image file
 % Image matrix (h,w) is regarded as data matrix (N,dim)
 I = im2single(rgb2gray(imread('./lenna.png')));
-I = imresize(I,1/1);
+% I = imresize(I,1/2);
 U = repmat(mean(I,1),[size(I,1),1]);
 B = I - U;
 
@@ -25,7 +25,7 @@ for i = 1:1:numel(ln)
 end
 
 % Show results
-figure('position',[1,1,1065,800]);
+figure;
 subplot(3,3,1);
 imshow(I); title('input image');
 for i = 1:1:numel(ln)
