@@ -16,7 +16,7 @@ covB = B'*B / (size(B,2)-1);
 V = V(:,ind); % sort principal components in descending order of coefficients
 
 % Reconstruct image
-ln = [1, 3, 5, 10, 50, size(B,2)]; % latent number for reducing data dimension
+ln = [1, 5, 10, 25, 50, size(B,2)]; % latent number for reducing data dimension
 rI = cell(numel(ln),1);
 for i = 1:1:numel(ln) 
     Z  = B*V(:,1:ln(i));  % Z:pricipal projections (score) (data dimension is reduced by ln(i))
