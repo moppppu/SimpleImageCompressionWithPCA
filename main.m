@@ -1,30 +1,31 @@
-close all;
 clear all;
+close all;
 clc;
+
+%% Simple Image Compression With PCA
 
 % Read image file
 % Image matrix (h,w) is regarded as data matrix (N,dim)
 I = im2single(rgb2gray(imread('./lenna.png')));
-% I = imresize(I,1/2);
-U = repmat(mean(I,1),[size(I,1),1]);
-B = I - U;
+U = repmat(mean(I,1),[size(I,1),1]); % average along with N (not dim)
+X = I - U;
 
-% PCA for B
-covB = B'*B / (size(B,2)-1);
-[V,D] = eig(covB); % covB*V = V*D, V:principal components (row vector), D:coefficients
+% PCA for X
+covX = X'*X / (size(X,2)-1);
+[V,D] = eig(covX); % covX*V = V*D, V:principal components (row vector), D:coefficients
 [~,ind] = sort(diag(D),'descend');
 V = V(:,ind); % sort principal components in descending order of coefficients
 
 % Reconstruct image
-ln = [1, 5, 10, 25, 50, size(B,2)]; % latent number for reducing data dimension
+ln = [1, 5, 10, 25, 50, size(X,2)]; % latent number for reducing data dimension
 rI = cell(numel(ln),1);
 for i = 1:1:numel(ln) 
-    Z  = B*V(:,1:ln(i));  % Z:pricipal projections (score) (data dimension is reduced by ln(i))
-    rB = Z*V(:,1:ln(i))'; % reconstruction from Z, B=B*V*V'=Z*V' (V*V'=I, V'=V^(-1), V is orthogonal matrix (直行行列))
-    rI{i} = rB + U;
+    Z  = X*V(:,1:ln(i));  % Z:pricipal projections (score) (data dimension is reduced by ln(i))
+    rX = Z*V(:,1:ln(i))'; % reconstruction from Z, X=X*V*V'=Z*V' (V*V'=I, V'=V^(-1), V is orthogonal matrix (直行行列))
+    rI{i} = rX + U;
 end
 
-% Show results
+% Show reconstruct image
 figure;
 subplot(3,3,1);
 imshow(I); title(['input image *(h,w)=(',num2str(size(I,1)),',',num2str(size(I,2)),')']);
