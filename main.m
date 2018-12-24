@@ -12,7 +12,7 @@ X = I - U;
 
 % PCA for X
 covX = X'*X / (size(X,2)-1);
-[V,D] = eig(covX); % covX*V = V*D, V:principal components (row vector), D:coefficients
+[V,D] = eig(covX); % covX*V = V*D, V:principal components (column vectors), D:coefficients
 [~,ind] = sort(diag(D),'descend');
 V = V(:,ind); % sort principal components in descending order of coefficients
 
